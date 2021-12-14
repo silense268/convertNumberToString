@@ -11,35 +11,35 @@ class Initializer {
         long number = 0;
         Text.Case currentCase = Text.Case.И;
         Text.Gender gender = Text.Gender.М;
-        System.out.println(Text.helpMsg);
-        System.out.println(Text.numberMsg);
+        System.out.println(Text.HELP_MSG);
+        System.out.println(Text.NUMBER_MSG);
 
         while (shouldTryAgain) {
             try {
                 if(!numberIsOk) {
-                    number = Integer.parseInt(scanner.nextLine());
+                    String check = scanner.nextLine();
+                    if (Long.parseLong(check) >= Text.MAX_NUMBER) {
+                        throw new NumberFormatException();
+                    }
+                    number = Integer.parseInt(check);
                     numberIsOk = true;
                 }
                 if(!caseIsOk) {
-                    System.out.println(Text.caseMsg);
+                    System.out.println(Text.CASE_MSG);
                     currentCase = Text.Case.valueOf(scanner.nextLine().toUpperCase());
                     caseIsOk = true;
                 }
-                System.out.println(Text.genderMsg);
+                System.out.println(Text.GENDER_MSG);
                 gender = Text.Gender.valueOf(scanner.nextLine().toUpperCase());
                 shouldTryAgain = false;
             } catch (NumberFormatException e) {
                 System.out.println("Необходимо ввести целое число, не превышающее триллиона");
             } catch (IllegalArgumentException e) {
                 System.out.println("Необходимо ввести первую букву падежа и первую букву рода");
-            }  catch (Exception e) {
-                e.printStackTrace();
-                System.exit(0);
             }
         }
         scanner.close();
-        InitializeData data = new InitializeData(number, currentCase, gender); //заполнил все и вернул
-        return data;
+        return  new InitializeData(number, currentCase, gender); //заполнил все и вернул
     }
 
 }
